@@ -43,16 +43,10 @@ use function is_null;
 
 class Factory
 {
-    private array $directories;
     private ?string $phpLevelSet = LevelSetList::UP_TO_PHP_83;
     private ?string $cacheDirectory = null;
 
-    public function directories(array $directories): self
-    {
-        $this->directories = $directories;
-
-        return $this;
-    }
+    public function __construct(private readonly array $directories) {}
 
     public function useFileCache(string $cacheDirectory): self
     {
@@ -61,11 +55,9 @@ class Factory
         return $this;
     }
 
-    public function phpVersion(string $phpVersion): self
+    public function php82(): self
     {
-        if ($phpVersion === '8.2') {
-            $this->phpLevelSet = LevelSetList::UP_TO_PHP_82;
-        }
+        $this->phpLevelSet = LevelSetList::UP_TO_PHP_82;
 
         return $this;
     }
