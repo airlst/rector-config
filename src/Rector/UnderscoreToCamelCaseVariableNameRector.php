@@ -11,17 +11,18 @@ namespace Airlst\RectorConfig\Rector;
 
 use PhpParser\Comment\Doc;
 use PhpParser\Node;
+use PhpParser\Node\Expr\Closure;
 use PhpParser\Node\Expr\Variable;
+use PhpParser\Node\FunctionLike;
 use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\Node\Stmt\Function_;
+use PhpParser\Node\Stmt\Namespace_;
 use Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfoFactory;
 use Rector\Php\ReservedKeywordAnalyzer;
-use Rector\PhpParser\Node\BetterNodeFinder;
+use Rector\PhpParser\Node\CustomNode\FileWithoutNamespace;
 use Rector\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
-
-use function is_null;
 
 /**
  * Adapted from https://github.com/rectorphp/rector/blob/4578e6d8490c1acfbf59bb17c4537a672fa77193/rules/naming/src/Rector/Variable/UnderscoreToCamelCaseVariableNameRector.php
@@ -33,10 +34,9 @@ final class UnderscoreToCamelCaseVariableNameRector extends AbstractRector
      * @see https://regex101.com/r/OtFn8I/1
      */
     private const PARAM_NAME_REGEX = '#(?<paramPrefix>@param\s.*\s+\$)(?<paramName>%s)#ms';
-    private readonly BetterNodeFinder $betterNodeFinder;
-    private readonly PhpDocInfoFactory $phpDocInfoFactory;
+    private bool $hasChanged = false;
 
-    public function __construct(private readonly ReservedKeywordAnalyzer $reservedKeywordAnalyzer) {}
+    public function __construct(private readonly ReservedKeywordAnalyzer $reservedKeywordAnalyzer, private readonly PhpDocInfoFactory $phpDocInfoFactory) {}
 
     public function getRuleDefinition(): RuleDefinition
     {
@@ -70,14 +70,60 @@ final class UnderscoreToCamelCaseVariableNameRector extends AbstractRector
      */
     public function getNodeTypes(): array
     {
-        return [Variable::class];
+        return [FileWithoutNamespace::class, Namespace_::class];
     }
 
     /**
-     * @param Variable $node
+     * @param ClassMethod|Closure|FileWithoutNamespace|Function_|Namespace_ $node
      */
     public function refactor(Node $node): ?Node
     {
+        if ($node->stmts === null) {
+            return null;
+        }
+
+        $this->hasChanged = false;
+
+        $this->traverseNodesWithCallable(
+            $node->stmts,
+            function (Node $subNode): void {
+                if ($subNode instanceof Variable || $subNode instanceof ClassMethod || $subNode instanceof Function_ || $subNode instanceof Closure) {
+                    $this->processRenameVariable($subNode);
+                }
+            }
+        );
+
+        if ($this->hasChanged) {
+            return $node;
+        }
+
+        return null;
+    }
+
+    /**
+     * @param FunctionLike|Variable $node
+     */
+    private function processRenameVariable(Node $node): ?Variable
+    {
+        if ($node instanceof FunctionLike) {
+            if ($node instanceof Closure) {
+                foreach ($node->uses as $closureUse) {
+                    $this->processRenameVariable($closureUse->var);
+                }
+            }
+
+            foreach ($node->params as $key => $param) {
+                $originalVariableName = $param->var->name;
+                $variable = $this->processRenameVariable($param->var);
+                if ($variable instanceof Variable) {
+                    $node->params[$key]->var = $variable;
+                    $this->updateDocblock($originalVariableName, $variable->name, $node);
+                }
+            }
+
+            return null;
+        }
+
         $nodeName = $this->getName($node);
         if ($nodeName === null) {
             return null;
@@ -89,7 +135,7 @@ final class UnderscoreToCamelCaseVariableNameRector extends AbstractRector
 
         $underscorePosition = strpos($nodeName, '_');
         // underscore not found, or in the first char, skip
-        if ($underscorePosition === false) {
+        if ((int) $underscorePosition === 0) {
             return null;
         }
 
@@ -102,26 +148,24 @@ final class UnderscoreToCamelCaseVariableNameRector extends AbstractRector
         }
 
         $node->name = $camelCaseName;
-        $this->updateDocblock($node, $nodeName, $camelCaseName);
+        $this->hasChanged = true;
 
         return $node;
     }
 
-    private function updateDocblock(Variable $variable, string $variableName, string $camelCaseName): void
+    private function updateDocblock(string $variableName, string $camelCaseName, ?FunctionLike $functionLike): void
     {
-        $parentClassMethodOrFunction = $this->betterNodeFinder->findParentByTypes($variable, [ClassMethod::class, Function_::class]);
-
-        if ($parentClassMethodOrFunction === null) {
+        if (! $functionLike instanceof FunctionLike) {
             return;
         }
 
-        $docComment = $parentClassMethodOrFunction->getDocComment();
-        if (! $docComment instanceof Doc) {
+        $docComment = $functionLike->getDocComment();
+        if ($docComment === null) {
             return;
         }
 
         $docCommentText = $docComment->getText();
-        if (is_null($docCommentText)) { // @phpstan-ignore-line
+        if ($docCommentText === null) {
             return;
         }
 
@@ -129,7 +173,7 @@ final class UnderscoreToCamelCaseVariableNameRector extends AbstractRector
             return;
         }
 
-        $phpDocInfo = $this->phpDocInfoFactory->createFromNodeOrEmpty($parentClassMethodOrFunction);
+        $phpDocInfo = $this->phpDocInfoFactory->createFromNodeOrEmpty($functionLike);
         $paramTagValueNodes = $phpDocInfo->getParamTagValueNodes();
 
         foreach ($paramTagValueNodes as $paramTagValueNode) {
@@ -140,6 +184,6 @@ final class UnderscoreToCamelCaseVariableNameRector extends AbstractRector
             }
         }
 
-        $parentClassMethodOrFunction->setDocComment(new Doc($phpDocInfo->getPhpDocNode()->__toString()));
+        $functionLike->setDocComment(new Doc($phpDocInfo->getPhpDocNode()->__toString()));
     }
 }
