@@ -1,0 +1,37 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+    cs-fixer:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: 8.3
+                  coverage: none
+
+            - name: Validate composer.json
+              run: composer validate --ansi --strict
+
+            - name: Cache composer dependencies
+              uses: actions/cache@v4
+              with:
+                path: vendor
+                key: composer-${{ hashFiles('composer.lock') }}
+
+            - name: Install PHP dependencies
+              run: composer install --no-interaction --no-scripts --no-progress --prefer-dist
+
+            - name: Run CS Fixer
+              run: composer cs-fixer
+
+            - name: Commit changes from rector
+              uses: EndBug/add-and-commit@v9
+              with:
+                default_author: github_actions
