@@ -53,7 +53,7 @@ Only PHP 8.2 and 8.3 are supported.
 
 ### Using cache for Rector
 
-By default, Rector uses in-memory cache.
+By default, Rector uses an in-memory cache.
 You can use file cache for Rector by calling the `useFileCache()` method on the factory object and providing the path to the cache directory:
 
 ```php
@@ -65,7 +65,7 @@ use Rector\Config\RectorConfig;
 
 return static function (RectorConfig $rectorConfig): void {
     $factory = new Airlst\RectorConfig\Factory(['src']);
-    $factory->php82()->useFileCache('cache/rector')->create($rectorConfig);
+    $factory->useFileCache('cache/rector')->create($rectorConfig);
 };
 ```
 
