@@ -32,6 +32,14 @@ return static function (RectorConfig $rectorConfig): void {
 
 The constructor of the `Factory` class takes an array of paths to be scanned for PHP files and fixed. You can pass any number of paths to it.
 
+### Running Rector
+
+Run Rector with the following command:
+
+```shell
+./vendor/bin/rector
+```
+
 ### PHP 8.2 support
 
 By default, it uses PHP 8.3 as the target version. You can switch to PHP 8.2 by calling the `php82()` method on the factory object:

@@ -1,14 +1,13 @@
 {
     "name": "airlst/rector-config",
     "description": "Rector config for AirLST projects",
+    "license": "MIT",
+    "type": "library",
     "keywords": [
         "airlst",
         "rector",
         "rector-config"
     ],
-    "homepage": "https://github.com/airlst/rector-config",
-    "license": "MIT",
-    "type": "library",
     "authors": [
         {
             "name": "Orkhan Ahmadov",
@@ -16,27 +15,37 @@
             "role": "Developer"
         }
     ],
+    "homepage": "https://github.com/airlst/rector-config",
     "require": {
         "php": "^8.2",
         "rector/rector": "0.19.5"
     },
     "require-dev": {
-        "airlst/php-cs-fixer-config": "^1.1.1"
+        "airlst/php-cs-fixer-config": "^1.1.1",
+        "airlst/phpstan-config": "^1.0",
+        "ergebnis/composer-normalize": "^2.42"
     },
     "autoload": {
         "psr-4": {
             "Airlst\\RectorConfig\\": "src"
         }
     },
-    "scripts": {
-        "cs-fixer": [
-            "./vendor/bin/php-cs-fixer fix --verbose --config=.php-cs-fixer.php"
-        ],
-        "rector": [
-            "./vendor/bin/rector"
-        ]
-    },
     "config": {
+        "allow-plugins": {
+            "ergebnis/composer-normalize": true,
+            "phpstan/extension-installer": true
+        },
         "sort-packages": true
+    },
+    "scripts": {
+        "ci": [
+            "@composer normalize",
+            "@rector",
+            "@cs-fixer",
+            "@phpstan"
+        ],
+        "cs-fixer": "./vendor/bin/php-cs-fixer fix",
+        "phpstan": "./vendor/bin/phpstan analyse -c phpstan.php",
+        "rector": "./vendor/bin/rector"
     }
 }

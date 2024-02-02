@@ -24,6 +24,8 @@ use Rector\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
+use function is_null;
+
 /**
  * Adapted from https://github.com/rectorphp/rector/blob/4578e6d8490c1acfbf59bb17c4537a672fa77193/rules/naming/src/Rector/Variable/UnderscoreToCamelCaseVariableNameRector.php
  * with skip _ in first character\.
@@ -86,7 +88,7 @@ final class UnderscoreToCamelCaseVariableNameRector extends AbstractRector
 
         $this->traverseNodesWithCallable(
             $node->stmts,
-            function (Node $subNode): void {
+            function (Node $subNode): void { // @phpstan-ignore-line
                 if ($subNode instanceof Variable || $subNode instanceof ClassMethod || $subNode instanceof Function_ || $subNode instanceof Closure) {
                     $this->processRenameVariable($subNode);
                 }
@@ -112,12 +114,12 @@ final class UnderscoreToCamelCaseVariableNameRector extends AbstractRector
                 }
             }
 
-            foreach ($node->params as $key => $param) {
+            foreach ($node->params as $key => $param) { // @phpstan-ignore-line
                 $originalVariableName = $param->var->name;
                 $variable = $this->processRenameVariable($param->var);
                 if ($variable instanceof Variable) {
-                    $node->params[$key]->var = $variable;
-                    $this->updateDocblock($originalVariableName, $variable->name, $node);
+                    $node->params[$key]->var = $variable; // @phpstan-ignore-line
+                    $this->updateDocblock($originalVariableName, $variable->name, $node); // @phpstan-ignore-line
                 }
             }
 
@@ -164,8 +166,9 @@ final class UnderscoreToCamelCaseVariableNameRector extends AbstractRector
             return;
         }
 
+        /** @var string|null $docCommentText */
         $docCommentText = $docComment->getText();
-        if ($docCommentText === null) {
+        if (is_null($docCommentText)) {
             return;
         }
 

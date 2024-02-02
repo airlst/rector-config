@@ -43,9 +43,10 @@ use function is_null;
 
 class Factory
 {
-    private ?string $phpLevelSet = LevelSetList::UP_TO_PHP_83;
+    private string $phpLevelSet = LevelSetList::UP_TO_PHP_83;
     private ?string $cacheDirectory = null;
 
+    /** @param array<string> $directories */
     public function __construct(private readonly array $directories) {}
 
     public function useFileCache(string $cacheDirectory): self
