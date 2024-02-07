@@ -8,7 +8,6 @@ use Airlst\RectorConfig\Rector\UnderscoreToCamelCaseVariableNameRector;
 use Rector\Caching\ValueObject\Storage\FileCacheStorage;
 use Rector\CodeQuality\Rector\Class_\InlineConstructorDefaultToPropertyRector;
 use Rector\Config\RectorConfig;
-use Rector\Php81\Rector\ClassConst\FinalizePublicClassConstantRector;
 use Rector\Privatization\Rector\MethodCall\PrivatizeLocalGetterToPropertyRector;
 use Rector\Set\ValueObject\LevelSetList;
 use Rector\Set\ValueObject\SetList;
@@ -87,7 +86,6 @@ class Factory
 
             // From PRIVATIZATION set
             PrivatizeLocalGetterToPropertyRector::class,
-            FinalizePublicClassConstantRector::class,
 
             // From TYPE_DECLARATION set
             AddArrowFunctionReturnTypeRector::class,
