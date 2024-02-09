@@ -6,10 +6,12 @@ namespace Airlst\RectorConfig;
 
 use Airlst\RectorConfig\Rector\UnderscoreToCamelCaseVariableNameRector;
 use Rector\CodingStyle\Rector\ArrowFunction\StaticArrowFunctionRector;
+use Rector\CodingStyle\Rector\Catch_\CatchExceptionNameMatchingTypeRector;
 use Rector\CodingStyle\Rector\Closure\StaticClosureRector;
 use Rector\CodingStyle\Rector\Encapsed\EncapsedStringsToSprintfRector;
 use Rector\CodingStyle\Rector\Encapsed\WrapEncapsedVariableInCurlyBracesRector;
 use Rector\CodingStyle\Rector\PostInc\PostIncDecToPreIncDecRector;
+use Rector\CodingStyle\Rector\Stmt\NewlineAfterStatementRector;
 use Rector\Config\RectorConfig;
 use Rector\Configuration\RectorConfigBuilder;
 
@@ -54,6 +56,8 @@ class Factory
             ->withSkip([
                 EncapsedStringsToSprintfRector::class,
                 PostIncDecToPreIncDecRector::class,
+                CatchExceptionNameMatchingTypeRector::class,
+                NewlineAfterStatementRector::class,
                 StaticClosureRector::class,
                 StaticArrowFunctionRector::class,
                 ...$this->skip,
