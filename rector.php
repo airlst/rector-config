@@ -2,10 +2,6 @@
 
 declare(strict_types=1);
 
-use Rector\Config\RectorConfig;
+$factory = new Airlst\RectorConfig\Factory(['src']);
 
-return static function (RectorConfig $rectorConfig): void {
-    $factory = new Airlst\RectorConfig\Factory(['src']);
-
-    $factory->php82()->create($rectorConfig);
-};
+return $factory->create();

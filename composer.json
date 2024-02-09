@@ -21,8 +21,8 @@
         "rector/rector": "1.0.0"
     },
     "require-dev": {
-        "airlst/php-cs-fixer-config": "^1.1.1",
-        "airlst/phpstan-config": "^1.0",
+        "airlst/php-cs-fixer-config": "^1.2.0",
+        "airlst/phpstan-config": "^1.1.1",
         "ergebnis/composer-normalize": "^2.42"
     },
     "autoload": {

@@ -22,15 +22,27 @@ Create a `rector.php` in the root of your project with the following contents:
 
 declare(strict_types=1);
 
-use Rector\Config\RectorConfig;
+$factory = new Airlst\RectorConfig\Factory(['src']);
 
-return static function (RectorConfig $rectorConfig): void {
-    $factory = new Airlst\RectorConfig\Factory(['src']);
-    $factory->create($rectorConfig);
-};
+return $factory->create();
 ```
 
 The constructor of the `Factory` class takes an array of paths to be scanned for PHP files and fixed. You can pass any number of paths to it.
+
+The method returns an instance of `Rector\Configuration\RectorConfigBuilder` which can be further configured.
+For example, you can instruct Rector to use file cache:
+
+```php
+<?php
+
+declare(strict_types=1);
+
+$factory = new Airlst\RectorConfig\Factory(['src']);
+
+return $factory
+    ->create()
+    ->withCache('cache/rector');
+```
 
 ### Running Rector
 
@@ -40,41 +52,22 @@ Run Rector with the following command:
 ./vendor/bin/rector
 ```
 
-### PHP 8.2 support
+### Skipping rules
 
-By default, it uses PHP 8.3 as the target version. You can switch to PHP 8.2 by calling the `php82()` method on the factory object:
-
-```php
-<?php
-
-declare(strict_types=1);
-
-use Rector\Config\RectorConfig;
-
-return static function (RectorConfig $rectorConfig): void {
-    $factory = new Airlst\RectorConfig\Factory(['src']);
-    $factory->php82()->create($rectorConfig);
-};
-```
-
-Only PHP 8.2 and 8.3 are supported.
-
-### Using cache for Rector
-
-By default, Rector uses an in-memory cache.
-You can use file cache for Rector by calling the `useFileCache()` method on the factory object and providing the path to the cache directory:
+You can skip certain rules by chaining the `withSkip()` method before calling `create()`:
 
 ```php
 <?php
 
 declare(strict_types=1);
 
-use Rector\Config\RectorConfig;
+$factory = new Airlst\RectorConfig\Factory(['src']);
 
-return static function (RectorConfig $rectorConfig): void {
-    $factory = new Airlst\RectorConfig\Factory(['src']);
-    $factory->useFileCache('cache/rector')->create($rectorConfig);
-};
+return $factory
+    ->withSkip([
+        Rector\DeadCode\Rector\PropertyProperty\RemoveNullPropertyInitializationRector::class,
+    ])
+    ->create();
 ```
 
 ### Changelog

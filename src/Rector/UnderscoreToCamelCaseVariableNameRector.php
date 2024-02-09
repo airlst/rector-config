@@ -36,6 +36,7 @@ final class UnderscoreToCamelCaseVariableNameRector extends AbstractRector
      * @see https://regex101.com/r/OtFn8I/1
      */
     private const PARAM_NAME_REGEX = '#(?<paramPrefix>@param\s.*\s+\$)(?<paramName>%s)#ms';
+
     private bool $hasChanged = false;
 
     public function __construct(private readonly ReservedKeywordAnalyzer $reservedKeywordAnalyzer, private readonly PhpDocInfoFactory $phpDocInfoFactory) {}
@@ -172,7 +173,7 @@ final class UnderscoreToCamelCaseVariableNameRector extends AbstractRector
             return;
         }
 
-        if (! preg_match(sprintf(self::PARAM_NAME_REGEX, $variableName), $docCommentText)) {
+        if (preg_match(sprintf(self::PARAM_NAME_REGEX, $variableName), $docCommentText) === 0) {
             return;
         }
 
