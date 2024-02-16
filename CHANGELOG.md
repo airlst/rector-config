@@ -2,6 +2,10 @@
 
 All notable changes to `rector-config` will be documented in this file
 
+## 2.0.1 - 2024-02-16
+
+- Updated `rector/rector` to version 1.0.1
+
 ## 2.0.0 - 2024-02-09
 
 - Using `rector/rector`'s new config builder from [v1 release](https://github.com/rectorphp/rector/releases/tag/1.0.0)
