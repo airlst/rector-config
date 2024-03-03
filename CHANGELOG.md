@@ -2,6 +2,10 @@
 
 All notable changes to `rector-config` will be documented in this file
 
+## 2.0.2 - 2024-03-03
+
+- Updated `rector/rector` to version 1.0.2
+
 ## 2.0.1 - 2024-02-16
 
 - Updated `rector/rector` to version 1.0.1
