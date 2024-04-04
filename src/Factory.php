@@ -14,6 +14,7 @@ use Rector\CodingStyle\Rector\PostInc\PostIncDecToPreIncDecRector;
 use Rector\CodingStyle\Rector\Stmt\NewlineAfterStatementRector;
 use Rector\Config\RectorConfig;
 use Rector\Configuration\RectorConfigBuilder;
+use Rector\Php81\Rector\FuncCall\NullToStrictStringFuncCallArgRector;
 
 class Factory
 {
@@ -60,6 +61,7 @@ class Factory
                 NewlineAfterStatementRector::class,
                 StaticClosureRector::class,
                 StaticArrowFunctionRector::class,
+                NullToStrictStringFuncCallArgRector::class,
                 ...$this->skip,
             ])
             ->withRootFiles();
