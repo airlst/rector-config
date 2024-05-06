@@ -15,6 +15,7 @@ use Rector\CodingStyle\Rector\Stmt\NewlineAfterStatementRector;
 use Rector\Config\RectorConfig;
 use Rector\Configuration\RectorConfigBuilder;
 use Rector\Php81\Rector\FuncCall\NullToStrictStringFuncCallArgRector;
+use Rector\PHPUnit\Set\PHPUnitSetList;
 
 class Factory
 {
@@ -50,6 +51,10 @@ class Factory
                 phpunit: true
             )
             ->withPhpSets()
+            ->withSets([
+                PHPUnitSetList::PHPUNIT_100,
+                PHPUnitSetList::PHPUNIT_CODE_QUALITY,
+            ])
             ->withRules([
                 WrapEncapsedVariableInCurlyBracesRector::class,
                 UnderscoreToCamelCaseVariableNameRector::class,

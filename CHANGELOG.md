@@ -2,6 +2,12 @@
 
 All notable changes to `rector-config` will be documented in this file
 
+## 3.0.0 - 2024-05-06
+
+- Use PHPUnit sets by default:
+  - `\Rector\PHPUnit\Set\PHPUnitSetList::PHPUNIT_100`
+  - `\Rector\PHPUnit\Set\PHPUnitSetList::PHPUNIT_CODE_QUALITY`
+
 ## 2.1.1 - 2024-04-05
 
 - Updated `rector/rector` to version 1.0.4
