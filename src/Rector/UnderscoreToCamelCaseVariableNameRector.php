@@ -81,7 +81,7 @@ final class UnderscoreToCamelCaseVariableNameRector extends AbstractRector
      */
     public function refactor(Node $node): ?Node
     {
-        if ($node->stmts === null) {
+        if (is_null($node->stmts)) {
             return null;
         }
 
@@ -128,7 +128,7 @@ final class UnderscoreToCamelCaseVariableNameRector extends AbstractRector
         }
 
         $nodeName = $this->getName($node);
-        if ($nodeName === null) {
+        if (is_null($nodeName)) {
             return null;
         }
 
@@ -163,13 +163,12 @@ final class UnderscoreToCamelCaseVariableNameRector extends AbstractRector
         }
 
         $docComment = $functionLike->getDocComment();
-        if ($docComment === null) {
+        if (is_null($docComment)) {
             return;
         }
 
-        /** @var string|null $docCommentText */
         $docCommentText = $docComment->getText();
-        if (is_null($docCommentText)) {
+        if (is_null($docCommentText)) { // @phpstan-ignore-line
             return;
         }
 

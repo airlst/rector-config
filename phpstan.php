@@ -7,4 +7,5 @@ $factory = new Airlst\PhpstanConfig\Factory(['src']);
 return $factory
     ->level(9)
     ->withBleedingEdge()
+    ->reportMaybesInMethodSignatures(false)
     ->create();

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Airlst\RectorConfig;
 
+use Airlst\RectorConfig\Rector\IdenticalNullCheckToIsNullRector;
 use Airlst\RectorConfig\Rector\UnderscoreToCamelCaseVariableNameRector;
 use Rector\CodingStyle\Rector\ArrowFunction\StaticArrowFunctionRector;
 use Rector\CodingStyle\Rector\Catch_\CatchExceptionNameMatchingTypeRector;
@@ -58,6 +59,7 @@ class Factory
             ->withRules([
                 WrapEncapsedVariableInCurlyBracesRector::class,
                 UnderscoreToCamelCaseVariableNameRector::class,
+                IdenticalNullCheckToIsNullRector::class,
             ])
             ->withSkip([
                 EncapsedStringsToSprintfRector::class,

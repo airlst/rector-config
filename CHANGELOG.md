@@ -2,6 +2,11 @@
 
 All notable changes to `rector-config` will be documented in this file
 
+## 4.0.0 - 2024-05-18
+
+- Use new `IdenticalNullCheckToIsNullRector` custom rule
+- Dependency update
+
 ## 3.0.0 - 2024-05-06
 
 - Use PHPUnit sets by default:
