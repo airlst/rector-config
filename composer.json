@@ -18,11 +18,11 @@
     "homepage": "https://github.com/airlst/rector-config",
     "require": {
         "php": "^8.2",
-        "rector/rector": "1.0.5"
+        "rector/rector": "1.1.0"
     },
     "require-dev": {
-        "airlst/php-cs-fixer-config": "^1.5.0",
-        "airlst/phpstan-config": "^2.3.0",
+        "airlst/php-cs-fixer-config": "^2.0.0",
+        "airlst/phpstan-config": "^3.0.0",
         "ergebnis/composer-normalize": "^2.42"
     },
     "autoload": {

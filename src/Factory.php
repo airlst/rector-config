@@ -71,6 +71,7 @@ class Factory
                 NullToStrictStringFuncCallArgRector::class,
                 ...$this->skip,
             ])
+            ->withSkipPath('_ide_helper*.php')
             ->withRootFiles();
     }
 }
