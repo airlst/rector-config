@@ -116,8 +116,8 @@ final class UnderscoreToCamelCaseVariableNameRector extends AbstractRector
             }
 
             foreach ($node->params as $key => $param) { // @phpstan-ignore-line
-                $originalVariableName = $param->var->name;
-                $variable = $this->processRenameVariable($param->var);
+                $originalVariableName = $param->var->name; // @phpstan-ignore-line
+                $variable = $this->processRenameVariable($param->var); // @phpstan-ignore-line
                 if ($variable instanceof Variable) {
                     $node->params[$key]->var = $variable; // @phpstan-ignore-line
                     $this->updateDocblock($originalVariableName, $variable->name, $node); // @phpstan-ignore-line
