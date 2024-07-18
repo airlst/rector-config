@@ -18,6 +18,7 @@
     "homepage": "https://github.com/airlst/rector-config",
     "require": {
         "php": "^8.2",
+        "driftingly/rector-laravel": "^1.2",
         "rector/rector": "1.2.1"
     },
     "require-dev": {

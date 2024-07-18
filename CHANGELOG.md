@@ -2,6 +2,10 @@
 
 All notable changes to `rector-config` will be documented in this file
 
+## 4.3.0 - 2024-07-16
+
+- Uses predefined `driftingly/rector-laravel` rules with `->withLaravelRules()` 
+
 ## 4.2.1 - 2024-07-16
 
 - Updated `rector/rector` to version 1.2.1

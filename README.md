@@ -44,6 +44,22 @@ return $factory
     ->withCache('cache/rector');
 ```
 
+### Using Laravel rules
+
+You can use predefined Laravel rules by chaining the `withLaravelRules()` method before calling `create()`:
+
+```php
+<?php
+
+declare(strict_types=1);
+
+$factory = new Airlst\RectorConfig\Factory(['src']);
+
+return $factory
+    ->withLaravelRules()
+    ->create();
+```
+
 ### Running Rector
 
 Run Rector with the following command:
