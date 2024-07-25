@@ -2,6 +2,10 @@
 
 All notable changes to `rector-config` will be documented in this file
 
+## 4.3.2 - 2024-07-25
+
+- Updated `rector/rector` to version 1.2.2
+
 ## 4.3.1 - 2024-07-18
 
 - Lock `driftingly/rector-laravel` version
