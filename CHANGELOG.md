@@ -2,6 +2,10 @@
 
 All notable changes to `rector-config` will be documented in this file
 
+## 4.3.7 - 2024-09-11
+
+- Updated `driftingly/rector-laravel` to version 1.2.3
+
 ## 4.3.6 - 2024-09-09
 
 - Updated `rector/rector` to version 1.2.5
