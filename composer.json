@@ -19,10 +19,10 @@
     "require": {
         "php": "^8.2",
         "driftingly/rector-laravel": "2.0.2",
-        "rector/rector": "2.0.6"
+        "rector/rector": "2.0.7"
     },
     "require-dev": {
-        "airlst/php-cs-fixer-config": "^3.3.0",
+        "airlst/php-cs-fixer-config": "^3.3.1",
         "airlst/phpstan-config": "dev-master",
         "ergebnis/composer-normalize": "^2.45"
     },
