@@ -18,11 +18,11 @@
     "homepage": "https://github.com/airlst/rector-config",
     "require": {
         "php": "^8.2",
-        "driftingly/rector-laravel": "2.0.2",
-        "rector/rector": "2.0.10"
+        "driftingly/rector-laravel": "2.0.3",
+        "rector/rector": "2.0.11"
     },
     "require-dev": {
-        "airlst/php-cs-fixer-config": "^3.5.0",
+        "airlst/php-cs-fixer-config": "^3.6.0",
         "airlst/phpstan-config": "dev-master",
         "ergebnis/composer-normalize": "^2.45"
     },
